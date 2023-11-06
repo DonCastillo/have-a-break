@@ -1,0 +1,14 @@
+{
+  "name": "have-a-break",
+  "version": "1.0.0",
+  "description": "A browser extension that reminds the user to take a break based on their length of time, length of scrollm and number of hyperlink clicks they've spent on the browser",
+  "main": "background.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Don Castillo",
+  "license": "ISC",
+  "dependencies": {
+    "chrome-types": "^0.1.116"
+  }
+}

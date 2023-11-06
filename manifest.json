@@ -1,0 +1,16 @@
+{
+    "manifest_version": 3,
+    "name": "Have a Break",
+    "description": "A browser extension that reminds the user to take a break based on their length of time, length of scroll, and number of clicks they've spend on the browser.",
+    "version": "1.0",
+    "action": {
+      "default_popup": "popup.html",
+      "default_icon": "./icons/extension.png"
+    },
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["scripts/content.js"]
+      }
+    ]
+}
