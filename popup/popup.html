@@ -1,9 +1,48 @@
 <html>
-    <head>
-        <link rel="stylesheet" href="popup.css">
-    </head>
-    <body>
-        <h1>Hello Extensions</h1>
-        <script src="popup.js"></script>
-    </body>
+	<head>
+		<link rel="stylesheet" href="popup.css" />
+	</head>
+	<body>
+		<div id="popup-wrapper">
+			<h1>Have a Break</h1>
+			<p>What activity would you like to measure while you're browsing?</p>
+			<select id="activity-selector">
+				<option value="duration" selected>Browsing Time</option>
+				<option value="scroll">Scroll Length</option>
+			</select>
+			<div id="duration-wrapper">
+				<p>Remind me to take a break after</p>
+
+				<div id="countdown-timer-input">
+					<div class="input-cell">
+						<input id="hour-input" type="text" value="00" disabled />
+						<div class="controls">
+							<button id="hour-inc">+</button>
+							<button id="hour-dec">-</button>
+						</div>
+					</div>
+					<div class="input-cell">
+						<input id="min-input" type="text" value="20" disabled />
+						<div class="controls">
+							<button id="min-inc">+</button>
+							<button id="min-dec">-</button>
+						</div>
+					</div>
+					<div class="input-cell">
+						<input id="sec-input" type="text" value="00" disabled />
+						<div class="controls">
+							<button id="sec-inc">+</button>
+							<button id="sec-dec">-</button>
+						</div>
+					</div>
+				</div>
+
+				<div id="countdown-timer-display"></div>
+			</div>
+			<div id="scroll-wrapper">
+				<p>Remind me to take a break after</p>
+			</div>
+		</div>
+		<script src="popup.js" type="module"></script>
+	</body>
 </html>

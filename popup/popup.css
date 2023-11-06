@@ -1,0 +1,26 @@
+#popup-wrapper {
+    background-color: yellow;
+    min-width: 300px;
+}
+#duration-wrapper {
+    background-color: orange;
+}
+#scroll-wrapper {
+    background-color: pink;
+}
+#countdown-timer-input {
+    display:flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.input-cell {
+    background-color: yellowgreen;
+}
+
+.input-cell .controls {
+    display: flex;
+    flex-direction: column;
+}
