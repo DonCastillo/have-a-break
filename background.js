@@ -1,41 +1,67 @@
-import {runCountdown, stopCountdown} from "./utils/timer.js";
+import { countdown } from "./utils/timer.js";
+
+// import {runTimer, stopTimer} from "./utils/timer.js";
 console.log("loaded content.ts");
-var counter = 0;
-var timer;
+let counter = 0;
+let timer;
+let activateBrowsing = false;
+let selectedActivity = "duration";
+let hour = 0;
+let minute = 0;
+let second = 0;
+
 
 // selecting a new active tab
 chrome.tabs.onActivated.addListener((tab) => {
-    // console.log("active tab", tab);
     const {tabId, windowId} = tab;
-    // chrome.tabs.getSelected(windowId, (tab) => {
-    //     console.log("tab selected", tab);
-    // });
     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
         // console.log("activated tab", tabs);
         if (tabs.length > 0) {
             const {url} = tabs[0];
-            // console.log("activated tab url", url);
             const urlProtocol = (new URL(url)?.protocol) || "";
-            // console.log(urlProtocol)
             const httpRegex = /^https?:$/;
             if(httpRegex.test(urlProtocol)) {
-                console.log("The protocol is either HTTP or HTTPS");
-                runCountdown()
-                clearInterval(timer);
-                timer = setInterval(() => {
-                    console.log("counter", counter);
-                    counter++;
-                }, 1000)
+
+                // active listener if there's a select activity and activate browsing is true
+                if(selectedActivity === "duration" && activateBrowsing) {
+                    runTimer()
+                }
+                
+
             } else {
-                console.log("The protocol is not HTTP or HTTPS");
-                stopCountdown();
-                clearInterval(timer);
+
+                if(selectedActivity === "duration" && activateBrowsing) {
+                    stopTimer();
+                    
+                }
+               
             }
         }
     })
 
 });
 
+
+function runTimer() {
+    console.log("run countdown")
+    clearInterval(timer);
+    timer = setInterval(() => {
+        // decrement the timer
+        // send update to popup to sync
+        console.log("counter", counter);
+        let countdownParams = countdown({hour, minute, second}, 1);
+        hour = countdownParams.hour;
+        minute = countdownParams.minute;
+        second = countdownParams.second;
+        console.log("hour: ", hour, "minute: ", minute, "second: ", second);
+        counter++;
+    }, 1000)
+}
+
+function stopTimer() {
+    console.log("stop count")
+    clearInterval(timer);
+}
 
 // creating a new tab
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
@@ -67,3 +93,16 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
 
 
 // stop time if a window is closed and there is not other window left
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    console.log("message received", message, sender);
+    if(message.timer) {
+        hour = message.timer.hour;
+        minute = message.timer.minute;
+        second = message.timer.second;
+    }
+    if(message.activity) {
+        selectedActivity = message.activity.selectedActivity;
+        activateBrowsing = message.activity.activateBrowsing;
+    }
+})

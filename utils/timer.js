@@ -41,17 +41,37 @@ export function decMinSec(currentMinSec) {
 	return currentMinSec;
 }
 
-export function runCountdown() {
-	console.log("run countdown")
-	chrome.storage.local.set({ name: "Don" }).then(() => {
-		console.log("storage set")
-		chrome.storage.local.get("name").then((data) => {
-			console.log("storage get", data);
-		});
-	})
 
+export function convertToSeconds(hour, minute, second) {
+	return (hour * 3600) + (minute * 60) + second;
 }
 
-export function stopCountdown() {
-	console.log("stop countdown");
+export function convertToHourMinSec(seconds) {
+	let hour = Math.floor(seconds / 3600);
+	let minute = Math.floor((seconds % 3600) / 60);
+	let second = seconds % 60;
+	return {hour, minute, second};
 }
+
+export function countdown({hour, minute, second}, interval) {
+	let allSeconds = convertToSeconds(hour, minute, second);
+	allSeconds -= interval;
+	return convertToHourMinSec(allSeconds);
+}
+
+
+
+// export function runCountdown() {
+// 	console.log("run countdown")
+// 	chrome.storage.local.set({ name: "Don" }).then(() => {
+// 		console.log("storage set")
+// 		chrome.storage.local.get("name").then((data) => {
+// 			console.log("storage get", data);
+// 		});
+// 	})
+
+// }
+
+// export function stopCountdown() {
+// 	console.log("stop countdown");
+// }
