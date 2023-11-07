@@ -1,5 +1,7 @@
 import {runCountdown, stopCountdown} from "./utils/timer.js";
 console.log("loaded content.ts");
+var counter = 0;
+var timer;
 
 // selecting a new active tab
 chrome.tabs.onActivated.addListener((tab) => {
@@ -19,9 +21,15 @@ chrome.tabs.onActivated.addListener((tab) => {
             if(httpRegex.test(urlProtocol)) {
                 console.log("The protocol is either HTTP or HTTPS");
                 runCountdown()
+                clearInterval(timer);
+                timer = setInterval(() => {
+                    console.log("counter", counter);
+                    counter++;
+                }, 1000)
             } else {
                 console.log("The protocol is not HTTP or HTTPS");
                 stopCountdown();
+                clearInterval(timer);
             }
         }
     })
@@ -40,6 +48,12 @@ chrome.windows.onRemoved.addListener((windowId) => {
     chrome.windows.getAll({populate: true}, (windows) => {
         // console.log("windows all", windows);
     })
+});
+
+
+
+chrome.storage.onChanged.addListener((changes, areaName) => {
+    console.log("storage changed", changes, areaName);
 });
 
 // http://localhost:8055/admin/login

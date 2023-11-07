@@ -43,6 +43,13 @@ export function decMinSec(currentMinSec) {
 
 export function runCountdown() {
 	console.log("run countdown")
+	chrome.storage.local.set({ name: "Don" }).then(() => {
+		console.log("storage set")
+		chrome.storage.local.get("name").then((data) => {
+			console.log("storage get", data);
+		});
+	})
+
 }
 
 export function stopCountdown() {
