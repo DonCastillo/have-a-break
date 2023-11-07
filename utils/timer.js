@@ -1,4 +1,4 @@
-export function displayTimer(value) {
+export function formatTimeInput(value) {
     if(value < 10) {
         return `0${value}`.toString();
     }

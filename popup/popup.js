@@ -1,5 +1,5 @@
 import {
-	displayTimer,
+	formatTimeInput,
 	incHour,
 	decHour,
 	incMinSec,
@@ -13,41 +13,42 @@ let second = 0;
 
 (async () => {
 	console.log("loaded poppup.ts");
+	// load the values from the popup on load
+	getPopupValues();
 
 	document
-		.querySelector("#activity-selector")
-		.addEventListener("change", changeActivityHandler);
-	document.querySelector("#hour-inc")?.addEventListener("click", () => {
+		.querySelector("select#activity-selector")
+		.addEventListener("change", getPopupValues);
+	document
+		.querySelector("#hour-inc")?.addEventListener("click", () => {
 		hour = incHour(hour);
-		updateTimerInputs();
+		setPopupValues();
 	});
 	document.querySelector("#hour-dec")?.addEventListener("click", () => {
 		hour = decHour(hour);
-		updateTimerInputs();
+		setPopupValues();
 	});
 	document.querySelector("#min-inc")?.addEventListener("click", () => {
 		minute = incMinSec(minute);
-		updateTimerInputs();
+		setPopupValues();
 	});
 	document.querySelector("#min-dec")?.addEventListener("click", () => {
 		minute = decMinSec(minute);
-		updateTimerInputs();
+		setPopupValues();
 	});
 	document.querySelector("#sec-inc")?.addEventListener("click", () => {
 		second = incMinSec(second);
-		updateTimerInputs();
+		setPopupValues();
 	});
 	document.querySelector("#sec-dec")?.addEventListener("click", () => {
 		second = decMinSec(second);
-		updateTimerInputs();
+		setPopupValues();
 	});
 	document
-		.querySelector("button#save-time")
+		.querySelector("button#start-recording")
 		.addEventListener("click", async () => {
 			console.log("save time clicked");
-			hour = parseInt(document.querySelector("#hour-input").value);
-			minute = parseInt(document.querySelector("#min-input").value);
-			second = parseInt(document.querySelector("#sec-input").value);
+			getPopupValues();
 			// display timer display
 			// hides the input
 			// hides the save time button
@@ -66,13 +67,22 @@ let second = 0;
 		});
 })();
 
-function updateTimerInputs() {
-	document.querySelector("#hour-input").value = displayTimer(hour);
-	document.querySelector("#min-input").value = displayTimer(minute);
-	document.querySelector("#sec-input").value = displayTimer(second);
+function setPopupValues() {
+	document.querySelector("select#activity-selector").value = selectedActivity;
+	document.querySelector("#hour-input").value = formatTimeInput(hour);
+	document.querySelector("#min-input").value = formatTimeInput(minute);
+	document.querySelector("#sec-input").value = formatTimeInput(second);
+	console.log("popup values", { selectedActivity, hour, minute, second });
+}
+
+function getPopupValues() {
+	selectedActivity = document.querySelector("select#activity-selector").value;
+	hour = parseInt(document.querySelector("#hour-input").value);
+	minute = parseInt(document.querySelector("#min-input").value);
+	second = parseInt(document.querySelector("#sec-input").value);
+	console.log("popup values", { selectedActivity, hour, minute, second });
 }
 
 function changeActivityHandler(event) {
-	console.log("changing activity handler....");
 	selectedActivity = event.target.value;
 }
