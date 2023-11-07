@@ -1,26 +1,113 @@
+html,
+body {
+	margin: 0;
+	padding: 0;
+	overflow-x: hidden;
+}
+p {
+	margin-top: 0;
+	line-height: 1.3rem;
+	font-size: 0.9rem;
+}
+h1 {
+	text-align: center;
+	font-size: 1.75rem;
+	margin-top: 0;
+}
+select {
+	width: 100%;
+	margin-bottom: 10px;
+	font-size: 0.9rem;
+	padding: 10px;
+}
+button:hover {
+    cursor: pointer;
+}
 #popup-wrapper {
-    background-color: yellow;
-    min-width: 300px;
+	width: 300px;
+	padding: 26px;
 }
 #duration-wrapper {
-    background-color: orange;
 }
 #scroll-wrapper {
-    background-color: pink;
 }
 #countdown-timer-input {
-    display:flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-items: center;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-items: stretch;
+}
+
+#countdown-timer-display {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-items: stretch;
 }
 
 .input-cell {
-    background-color: yellowgreen;
+	width: 33%;
+}
+.input-cell button {
+	width: 100%;
+}
+.input-cell input {
+	width: 100%;
+	padding: 9px 16px;
+	font-size: 3rem;
+	text-align: center;
+	font-weight: bold;
+}
+.input-cell p {
+	margin-bottom: 10px;
+	text-align: center;
+	font-size: 0.9rem;
+	font-weight: bold;
+}
+.input-cell .controls {
+	display: flex;
+	flex-direction: column;
 }
 
-.input-cell .controls {
-    display: flex;
-    flex-direction: column;
+
+.display-cell {
+	width: 33%;
+}
+
+.display-cell p:first-child {
+    width: 100%;
+    font-size: 3rem;
+    text-align: center;
+    font-weight: bold;
+    display: block;
+    margin: 0;
+    height: auto;
+    line-height: unset;
+}
+
+.display-cell p:last-child {
+    margin-bottom: 10px;
+	text-align: center;
+	font-size: 0.9rem;
+	font-weight: bold;
+}
+
+button.control {
+    padding: 10px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    border: 0;
+    box-shadow: none;
+    margin: 5px 0;
+    color: white;
+}
+
+button#start-recording {
+    background-color: #28a745
+}
+
+button#stop-recording {
+   background-color: #dc3545;
 }

@@ -1,5 +1,6 @@
 <html>
 	<head>
+		<link rel="stylesheet" href="normalize.css" />
 		<link rel="stylesheet" href="popup.css" />
 	</head>
 	<body>
@@ -8,41 +9,35 @@
 			<p>What activity would you like to measure while you're browsing?</p>
 			<select id="activity-selector">
 				<option value="duration" selected>Browsing Time</option>
-				<option value="scroll">Scroll Length</option>
+				<!--<option value="scroll">Scroll Length</option>-->
 			</select>
 			<div id="duration-wrapper">
 				<p>Remind me to take a break after</p>
 
 				<div id="countdown-timer-input">
 					<div class="input-cell">
+						<button id="hour-inc">+</button>
 						<input id="hour-input" type="text" value="00" disabled />
-						<div class="controls">
-							<button id="hour-inc">+</button>
-							<button id="hour-dec">-</button>
-						</div>
+						<p>HR</p>
+						<button id="hour-dec">-</button>
 					</div>
 					<div class="input-cell">
+						<button id="min-inc">+</button>
 						<input id="min-input" type="text" value="20" disabled />
-						<div class="controls">
-							<button id="min-inc">+</button>
-							<button id="min-dec">-</button>
-						</div>
+						<p>MIN</p>
+						<button id="min-dec">-</button>
 					</div>
 					<div class="input-cell">
+						<button id="sec-inc">+</button>
 						<input id="sec-input" type="text" value="00" disabled />
-						<div class="controls">
-							<button id="sec-inc">+</button>
-							<button id="sec-dec">-</button>
-						</div>
+						<p>SEC</p>
+						<button id="sec-dec">-</button>
 					</div>
 				</div>
-
-				<div id="countdown-timer-display"></div>
 			</div>
-			<button id="start-recording">Start Recording</button>
-			<div id="scroll-wrapper">
-				<p>Remind me to take a break after</p>
-			</div>
+			<button class="control" id="start-recording" style="display: block;">Start Recording</button>
+			<button class="control" id="stop-recording" style="display:none;">Stop Recording</button>
+			<div id="scroll-wrapper"></div>
 		</div>
 		<script src="popup.js" type="module"></script>
 	</body>

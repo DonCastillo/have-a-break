@@ -1,3 +1,4 @@
+import { setStorage } from "./utils/data.js";
 import { countdown } from "./utils/timer.js";
 
 // import {runTimer, stopTimer} from "./utils/timer.js";
@@ -53,6 +54,7 @@ function runTimer() {
         hour = countdownParams.hour;
         minute = countdownParams.minute;
         second = countdownParams.second;
+        setStorage({hour, minute, second, selectedActivity});
         console.log("hour: ", hour, "minute: ", minute, "second: ", second);
         counter++;
     }, 1000)
@@ -78,9 +80,9 @@ chrome.windows.onRemoved.addListener((windowId) => {
 
 
 
-chrome.storage.onChanged.addListener((changes, areaName) => {
-    console.log("storage changed", changes, areaName);
-});
+// chrome.storage.onChanged.addListener((changes, areaName) => {
+//     console.log("storage changed", changes, areaName);
+// });
 
 // http://localhost:8055/admin/login
 
@@ -104,5 +106,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if(message.activity) {
         selectedActivity = message.activity.selectedActivity;
         activateBrowsing = message.activity.activateBrowsing;
+    }
+    if(!activateBrowsing) {
+        stopTimer();
     }
 })

@@ -1,3 +1,4 @@
+import { getStorage, setStorage } from "../utils/data.js";
 import {
 	formatTimeInput,
 	incHour,
@@ -19,8 +20,7 @@ let second = 0;
 	document
 		.querySelector("select#activity-selector")
 		.addEventListener("change", getPopupValues);
-	document
-		.querySelector("#hour-inc")?.addEventListener("click", () => {
+	document.querySelector("#hour-inc")?.addEventListener("click", () => {
 		hour = incHour(hour);
 		setPopupValues();
 	});
@@ -65,6 +65,18 @@ let second = 0;
 				activity: { selectedActivity, activateBrowsing },
 			});
 		});
+
+	document.querySelector("button#stop-recording").addEventListener("click", () => {
+		console.log("stop recording clicked");
+		// display input
+		// hides the timer display
+		// hides the stop recording button
+		activateBrowsing = false;
+		chrome.runtime.sendMessage({
+			timer: { hour, minute, second },
+			activity: { selectedActivity, activateBrowsing },
+		});
+	})
 })();
 
 function setPopupValues() {
@@ -83,6 +95,15 @@ function getPopupValues() {
 	console.log("popup values", { selectedActivity, hour, minute, second });
 }
 
-function changeActivityHandler(event) {
-	selectedActivity = event.target.value;
-}
+
+chrome.storage.onChanged.addListener((changes, areaName) => {
+	console.log("detected in storage change in the popup")
+	getStorage().then((data) => {
+		console.log("storage get", data);
+		selectedActivity = data.selectedActivity;
+		hour = data.hour;
+		minute = data.minute;
+		second = data.second;
+		setPopupValues();
+	})
+});
