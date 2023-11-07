@@ -58,17 +58,7 @@ let second = 0;
 			console.log("save time clicked");
 			isRecording = true;
 			getPopupValues();
-			// display timer display
-			// hides the input
-			// hides the save time button
 
-			// chrome.storage.sync.set({ hour, minute, second, selectedActivity }).then(() => {
-			// 	console.log("storage set");
-			// 	chrome.storage.sync.get(["hour", "minute", "second", "selectedActivity"], (data) => {
-			// 		console.log("storage get", data);
-			// 	});
-			// });
-			
 			await chrome.runtime.sendMessage({
 				timer: { hour, minute, second },
 				activity: { selectedActivity, isRecording },
@@ -82,9 +72,7 @@ let second = 0;
 			isRecording = false;
 			console.log("stop recording clicked");
 			getPopupValues();
-			// display input
-			// hides the timer display
-			// hides the stop recording button
+			
 			chrome.runtime.sendMessage({
 				timer: { hour, minute, second },
 				activity: { selectedActivity, isRecording },
@@ -95,9 +83,15 @@ let second = 0;
 
 function setPopupValues() {
 	document.querySelector("select#activity-selector").value = selectedActivity;
-	document.querySelector("#hour-input").value = hour ? formatTimeInput(hour) : "00";
-	document.querySelector("#min-input").value = minute ? formatTimeInput(minute) : "00";
-	document.querySelector("#sec-input").value = second ? formatTimeInput(second) : "00";
+	document.querySelector("#hour-input").value = hour
+		? formatTimeInput(hour)
+		: "00";
+	document.querySelector("#min-input").value = minute
+		? formatTimeInput(minute)
+		: "00";
+	document.querySelector("#sec-input").value = second
+		? formatTimeInput(second)
+		: "00";
 	console.log("popup values", { selectedActivity, hour, minute, second });
 }
 
@@ -157,13 +151,14 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
 	console.log("detected in storage change in the popup");
 	getStorage().then((data) => {
 		console.log("storage get", data);
-		selectedActivity = data.selectedActivity ? data.selectedActivity : "duration";
+		selectedActivity = data.selectedActivity
+			? data.selectedActivity
+			: "duration";
 		hour = data.hour !== undefined ? data.hour : 0;
 		minute = data.minute !== undefined ? data.minute : 20;
 		second = data.second !== undefined ? data.second : 0;
 		isRecording = data.isRecording !== undefined ? data.isRecording : false;
 		setPopupValues();
 		recordingStatus(isRecording);
-
 	});
 });

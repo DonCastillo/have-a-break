@@ -9,26 +9,29 @@
 	});
 
 	document.querySelector("body").addEventListener("click", () => {
-        if(isHttpProtocol()) {
-            chrome.runtime.sendMessage({ action: "RUN_TIMER" });
-        }
-    });
+        console.log("clicked")
+		if (isHttpProtocol()) {
+			chrome.runtime.sendMessage({ action: "RUN_TIMER" });
+		}
+	});
 
-	window.onscroll = () => {
-		if(isHttpProtocol()) {
-            chrome.runtime.sendMessage({ action: "RUN_TIMER" });
-        }
+	window.onscroll = function () {
+        console.log("clicked")
+		if (isHttpProtocol()) {
+			chrome.runtime.sendMessage({ action: "RUN_TIMER" });
+		}
 	};
 
+    function isHttpProtocol() {
+        const urlProtocol = new URL(window.location.href)?.protocol || "";
+        const httpRegex = /^https?:$/;
+        if (urlProtocol) {
+            if (httpRegex.test(urlProtocol)) {
+                return true;
+            }
+        }
+        return false;
+    }
 })();
 
-function isHttpProtocol() {
-	const urlProtocol = new URL(window.location.href)?.protocol || "";
-	const httpRegex = /^https?:$/;
-	if (urlProtocol) {
-		if (httpRegex.test(urlProtocol)) {
-			return true;
-		}
-	}
-    return false;
-}
+
