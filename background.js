@@ -16,10 +16,13 @@ chrome.tabs.onActivated.addListener((tab) => {
 	chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
 		if (tabs.length > 0) {
 			const { url } = tabs[0];
+        console.log(url)
+
 			if (url) {
 				const urlProtocol = new URL(url)?.protocol || "";
 				const httpRegex = /^https?:$/;
 				if (httpRegex.test(urlProtocol)) {
+                    isRecording = true;
 					if (selectedActivity === "duration" && isRecording) {
 						runTimer();
 					}
@@ -37,10 +40,12 @@ chrome.tabs.onActivated.addListener((tab) => {
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 	if (tab) {
 		const { url } = tab;
+        console.log(url)
 		if (url) {
 			const urlProtocol = new URL(url)?.protocol || "";
 			const httpRegex = /^https?:$/;
 			if (httpRegex.test(urlProtocol)) {
+                isRecording = true;
 				if (selectedActivity === "duration" && isRecording) {
 					runTimer();
 				}
@@ -55,6 +60,12 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
 function runTimer() {
 	console.log("run countdown");
+    if (hour < 0 || minute < 0 || second < 0) {
+        stopTimer();
+        hour = 0;
+        minute = 0;
+        second = 0;
+    }
 	clearInterval(timer);
 	isRecording = true;
 	timer = setInterval(async () => {
@@ -66,9 +77,7 @@ function runTimer() {
 		minute = countdownParams.minute;
 		second = countdownParams.second;
 		setStorage({ hour, minute, second, selectedActivity, isRecording });
-        if (hour < 0 || minute < 0 || second < 0) {
-            stopTimer();
-        }
+        
 		if (hour === 0 && minute === 0 && second === 0) {
 			stopTimer();
 			await finishTimer();
