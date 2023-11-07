@@ -1,6 +1,10 @@
 (() => {
     console.log("loaded content.ts");
-    chrome.tabs.onActivated.addListener((tab) => {
-        console.log("active tab", tab);
+   
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+        console.log("request", request);
+        if(request.action === "FINISH") {
+            alert("Have a break!");
+        }
     });
 })();

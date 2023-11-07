@@ -1,4 +1,5 @@
 export function formatTimeInput(value) {
+	console.log("value: ", value)
     if(value < 10) {
         return `0${value}`.toString();
     }
@@ -54,24 +55,11 @@ export function convertToHourMinSec(seconds) {
 }
 
 export function countdown({hour, minute, second}, interval) {
-	let allSeconds = convertToSeconds(hour, minute, second);
-	allSeconds -= interval;
-	return convertToHourMinSec(allSeconds);
+	// if(hour >= 0 && minute >= 0 && second > 0) {
+		let allSeconds = convertToSeconds(hour, minute, second);
+		allSeconds -= interval;
+		return convertToHourMinSec(allSeconds);
+	// }
+	// return {hour: 0, minute: 0, second: 0};
+
 }
-
-
-
-// export function runCountdown() {
-// 	console.log("run countdown")
-// 	chrome.storage.local.set({ name: "Don" }).then(() => {
-// 		console.log("storage set")
-// 		chrome.storage.local.get("name").then((data) => {
-// 			console.log("storage get", data);
-// 		});
-// 	})
-
-// }
-
-// export function stopCountdown() {
-// 	console.log("stop countdown");
-// }

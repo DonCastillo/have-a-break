@@ -95,9 +95,9 @@ let second = 0;
 
 function setPopupValues() {
 	document.querySelector("select#activity-selector").value = selectedActivity;
-	document.querySelector("#hour-input").value = formatTimeInput(hour);
-	document.querySelector("#min-input").value = formatTimeInput(minute);
-	document.querySelector("#sec-input").value = formatTimeInput(second);
+	document.querySelector("#hour-input").value = hour ? formatTimeInput(hour) : "00";
+	document.querySelector("#min-input").value = minute ? formatTimeInput(minute) : "00";
+	document.querySelector("#sec-input").value = second ? formatTimeInput(second) : "00";
 	console.log("popup values", { selectedActivity, hour, minute, second });
 }
 
@@ -157,11 +157,11 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
 	console.log("detected in storage change in the popup");
 	getStorage().then((data) => {
 		console.log("storage get", data);
-		selectedActivity = data.selectedActivity;
-		hour = data.hour;
-		minute = data.minute;
-		second = data.second;
-		isRecording = data.isRecording;
+		selectedActivity = data.selectedActivity ? data.selectedActivity : "duration";
+		hour = data.hour !== undefined ? data.hour : 0;
+		minute = data.minute !== undefined ? data.minute : 20;
+		second = data.second !== undefined ? data.second : 0;
+		isRecording = data.isRecording !== undefined ? data.isRecording : false;
 		setPopupValues();
 		recordingStatus(isRecording);
 
