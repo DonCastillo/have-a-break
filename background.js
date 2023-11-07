@@ -112,6 +112,13 @@ import { countdown } from "./utils/timer.js";
 			stopTimer();
 		}
 	});
+
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+        console.log("message received", message, sender);
+        if (message.action === "RUN_TIMER") {
+            runTimer();
+        }
+    });
 // } catch (error) {
 //     console.log(error);
 // }
