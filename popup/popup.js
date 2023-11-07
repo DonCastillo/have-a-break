@@ -7,15 +7,17 @@ import {
 	decMinSec,
 } from "./../utils/timer.js";
 let selectedActivity = "duration";
-let activateBrowsing = false;
+let isRecording = false;
 let hour = 0;
-let minute = 0;
+let minute = 20;
 let second = 0;
 
 (async () => {
 	console.log("loaded poppup.ts");
-	// load the values from the popup on load
-	getPopupValues();
+
+	await getInitialValues();
+	setPopupValues();
+	setStorage({ hour, minute, second, selectedActivity, isRecording });
 
 	document
 		.querySelector("select#activity-selector")
@@ -23,31 +25,38 @@ let second = 0;
 	document.querySelector("#hour-inc")?.addEventListener("click", () => {
 		hour = incHour(hour);
 		setPopupValues();
+		setStorage({ hour, minute, second, selectedActivity, isRecording });
 	});
 	document.querySelector("#hour-dec")?.addEventListener("click", () => {
 		hour = decHour(hour);
 		setPopupValues();
+		setStorage({ hour, minute, second, selectedActivity, isRecording });
 	});
 	document.querySelector("#min-inc")?.addEventListener("click", () => {
 		minute = incMinSec(minute);
 		setPopupValues();
+		setStorage({ hour, minute, second, selectedActivity, isRecording });
 	});
 	document.querySelector("#min-dec")?.addEventListener("click", () => {
 		minute = decMinSec(minute);
 		setPopupValues();
+		setStorage({ hour, minute, second, selectedActivity, isRecording });
 	});
 	document.querySelector("#sec-inc")?.addEventListener("click", () => {
 		second = incMinSec(second);
 		setPopupValues();
+		setStorage({ hour, minute, second, selectedActivity, isRecording });
 	});
 	document.querySelector("#sec-dec")?.addEventListener("click", () => {
 		second = decMinSec(second);
 		setPopupValues();
+		setStorage({ hour, minute, second, selectedActivity, isRecording });
 	});
 	document
 		.querySelector("button#start-recording")
 		.addEventListener("click", async () => {
 			console.log("save time clicked");
+			isRecording = true;
 			getPopupValues();
 			// display timer display
 			// hides the input
@@ -59,24 +68,29 @@ let second = 0;
 			// 		console.log("storage get", data);
 			// 	});
 			// });
-			activateBrowsing = true;
+			
 			await chrome.runtime.sendMessage({
 				timer: { hour, minute, second },
-				activity: { selectedActivity, activateBrowsing },
+				activity: { selectedActivity, isRecording },
 			});
+			recordingStatus(isRecording);
 		});
 
-	document.querySelector("button#stop-recording").addEventListener("click", () => {
-		console.log("stop recording clicked");
-		// display input
-		// hides the timer display
-		// hides the stop recording button
-		activateBrowsing = false;
-		chrome.runtime.sendMessage({
-			timer: { hour, minute, second },
-			activity: { selectedActivity, activateBrowsing },
+	document
+		.querySelector("button#stop-recording")
+		.addEventListener("click", () => {
+			isRecording = false;
+			console.log("stop recording clicked");
+			getPopupValues();
+			// display input
+			// hides the timer display
+			// hides the stop recording button
+			chrome.runtime.sendMessage({
+				timer: { hour, minute, second },
+				activity: { selectedActivity, isRecording },
+			});
+			recordingStatus(isRecording);
 		});
-	})
 })();
 
 function setPopupValues() {
@@ -87,23 +101,69 @@ function setPopupValues() {
 	console.log("popup values", { selectedActivity, hour, minute, second });
 }
 
-function getPopupValues() {
-	selectedActivity = document.querySelector("select#activity-selector").value;
-	hour = parseInt(document.querySelector("#hour-input").value);
-	minute = parseInt(document.querySelector("#min-input").value);
-	second = parseInt(document.querySelector("#sec-input").value);
-	console.log("popup values", { selectedActivity, hour, minute, second });
+async function getPopupValues() {
+	selectedActivity =
+		document.querySelector("select#activity-selector").value ??
+		selectedActivity;
+	hour = parseInt(document.querySelector("#hour-input").value) ?? hour;
+	minute = parseInt(document.querySelector("#min-input").value) ?? minute;
+	second = parseInt(document.querySelector("#sec-input").value) ?? second;
+	setStorage({ hour, minute, second, selectedActivity, isRecording });
+	console.log("popup values", {
+		selectedActivity,
+		hour,
+		minute,
+		second,
+		isRecording,
+	});
 }
 
+async function getInitialValues() {
+	await getStorage().then((data) => {
+		selectedActivity = data.selectedActivity
+			? data.selectedActivity
+			: "duration";
+		isRecording = data.isRecording ? data.isRecording : false;
+		hour = data.hour ? data.hour : 0;
+		minute = data.minute ? data.minute : 20;
+		second = data.second ? data.second : 0;
+	});
+}
+
+function recordingStatus(enable) {
+	if (enable) {
+		document.querySelector("select#activity-selector").disabled = true;
+		document.querySelectorAll(".input-cell button").forEach((button) => {
+			button.style.display = "none";
+		});
+		document.querySelector("button#start-recording").style.display = "none";
+		document.querySelector("button#stop-recording").style.display = "block";
+	} else {
+		document.querySelector("select#activity-selector").disabled = false;
+		document.querySelector("select#activity-selector").value = "duration";
+		document.querySelectorAll(".input-cell button").forEach((button) => {
+			button.style.display = "block";
+		});
+		document.querySelector("button#start-recording").style.display = "block";
+		document.querySelector("button#stop-recording").style.display = "none";
+	}
+}
+
+function displayMessageStatus(text) {
+	document.querySelector("#message-status").textContent = text;
+}
 
 chrome.storage.onChanged.addListener((changes, areaName) => {
-	console.log("detected in storage change in the popup")
+	console.log("detected in storage change in the popup");
 	getStorage().then((data) => {
 		console.log("storage get", data);
 		selectedActivity = data.selectedActivity;
 		hour = data.hour;
 		minute = data.minute;
 		second = data.second;
+		isRecording = data.isRecording;
 		setPopupValues();
-	})
+		recordingStatus(isRecording);
+
+	});
 });

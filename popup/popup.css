@@ -59,6 +59,9 @@ button:hover {
 	font-size: 3rem;
 	text-align: center;
 	font-weight: bold;
+    font-family: unset;
+    background: none;
+    border: 0;
 }
 .input-cell p {
 	margin-bottom: 10px;
@@ -92,6 +95,10 @@ button:hover {
 	text-align: center;
 	font-size: 0.9rem;
 	font-weight: bold;
+}
+
+.controls {
+    margin-top:10px;
 }
 
 button.control {

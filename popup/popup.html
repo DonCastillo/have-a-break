@@ -17,26 +17,30 @@
 				<div id="countdown-timer-input">
 					<div class="input-cell">
 						<button id="hour-inc">+</button>
-						<input id="hour-input" type="text" value="00" disabled />
+						<input id="hour-input" type="text" value="" disabled />
 						<p>HR</p>
 						<button id="hour-dec">-</button>
 					</div>
 					<div class="input-cell">
 						<button id="min-inc">+</button>
-						<input id="min-input" type="text" value="20" disabled />
+						<input id="min-input" type="text" value="" disabled />
 						<p>MIN</p>
 						<button id="min-dec">-</button>
 					</div>
 					<div class="input-cell">
 						<button id="sec-inc">+</button>
-						<input id="sec-input" type="text" value="00" disabled />
+						<input id="sec-input" type="text" value="" disabled />
 						<p>SEC</p>
 						<button id="sec-dec">-</button>
 					</div>
 				</div>
 			</div>
-			<button class="control" id="start-recording" style="display: block;">Start Recording</button>
-			<button class="control" id="stop-recording" style="display:none;">Stop Recording</button>
+			<p id="message-status">The timer starts when you start browsing actively.</p>
+			<div class="controls">
+				<button class="control" id="start-recording" style="display: block;">Start Recording</button>
+				<button class="control" id="stop-recording" style="display:none;">Stop Recording</button>
+			</div>
+			
 			<div id="scroll-wrapper"></div>
 		</div>
 		<script src="popup.js" type="module"></script>
