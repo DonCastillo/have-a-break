@@ -13,8 +13,9 @@
         "js": ["scripts/content.js"]
       }
     ],
-    "permissions": ["storage"],
+    "permissions": ["storage", "tabs", "activeTab"],
     "background": {
-      "service_worker": "background.js"
+      "service_worker": "background.js",
+      "type": "module"
     }
 }

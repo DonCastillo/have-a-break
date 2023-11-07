@@ -40,3 +40,11 @@ export function decMinSec(currentMinSec) {
 	}
 	return currentMinSec;
 }
+
+export function runCountdown() {
+	console.log("run countdown")
+}
+
+export function stopCountdown() {
+	console.log("stop countdown");
+}

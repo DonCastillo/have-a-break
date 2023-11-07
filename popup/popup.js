@@ -32,6 +32,7 @@ let second = 0;
 		second = decMinSec(second);
 		updateTimerInputs();
 	});
+
 })();
 
 function updateTimerInputs() {
